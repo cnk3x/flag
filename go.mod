@@ -1,3 +1,3 @@
-module github.com/spf13/pflag
+module github.com/cnk3x/flag
 
 go 1.12

@@ -1,4 +1,4 @@
-package pflag
+package flag
 
 import (
 	"fmt"
