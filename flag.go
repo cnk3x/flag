@@ -777,7 +777,7 @@ func PrintDefaults() {
 
 // defaultUsage is the default function to print a usage message.
 func defaultUsage(f *FlagSet) {
-	fmt.Fprintf(f.Output(), "Usage:\n\t%s [...options]\n\nOptions:", f.name)
+	fmt.Fprintf(f.Output(), "Usage:\n  %s [...options]\n\nOptions:\n", f.name)
 	f.PrintDefaults()
 }
 
@@ -790,7 +790,7 @@ func defaultUsage(f *FlagSet) {
 // By default it prints a simple header and calls PrintDefaults; for details about the
 // format of the output and how to control it, see the documentation for PrintDefaults.
 var Usage = func() {
-	fmt.Fprintf(os.Stderr, "Usage:\n\t%s [...options]\n\nOptions:", filepath.Base(os.Args[0]))
+	fmt.Fprintf(os.Stderr, "Usage:\n  %s [...options]\n\nOptions:\n", filepath.Base(os.Args[0]))
 	PrintDefaults()
 }
 
@@ -923,15 +923,10 @@ func VarP(value Value, name, shorthand, usage string) {
 	CommandLine.VarP(value, name, shorthand, usage)
 }
 
-// failf prints to standard error a formatted error and usage message and
+// failf no prints to standard error a formatted error and usage message and
 // returns the error.
 func (f *FlagSet) failf(format string, a ...interface{}) error {
-	err := fmt.Errorf(format, a...)
-	if f.errorHandling != ContinueOnError {
-		fmt.Fprintln(f.Output(), err)
-		// f.usage()
-	}
-	return err
+	return fmt.Errorf(format, a...)
 }
 
 // usage calls the Usage method for the flag set, or the usage function if
@@ -1017,9 +1012,6 @@ func (f *FlagSet) parseLongArg(s string, args []string, fn parseFunc) (a []strin
 	}
 
 	err = fn(flag, value)
-	if err != nil {
-		f.failf(err.Error())
-	}
 	return
 }
 
@@ -1083,9 +1075,6 @@ func (f *FlagSet) parseSingleShortArg(shorthands string, args []string, fn parse
 	}
 
 	err = fn(flag, value)
-	if err != nil {
-		f.failf(err.Error())
-	}
 	return
 }
 
